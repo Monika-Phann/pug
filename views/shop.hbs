@@ -1,20 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ pageTitle }}</title>
-    <link rel="stylesheet" href="/css/main.css">
-</head>
-<body>
-    <header class="main-header">
-    <nav class="main-header__nav">
-        <ul class="main-header__item-list">
-            <li class="main-header__item"> <a class="active" href="/">Shop</a></li>
-            <li class="main-header__item"> <a href="/admin/add-product">Add-Product</a></li>
-        </ul>
-    </nav>
-    </header>
-         <h1>List Products</h1>
-</body>
-</html>
+
+<link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
+
+
+<main>
+  {{#if hasProducts}}
+    {{#each prods}}
+    <div class="w-full max-w-sm mx-auto bg-gray-50 border border-gray-200 rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 overflow-hidden mb-6">
+        <a href="#" class="block overflow-hidden">
+            <img class="w-full h-64 object-cover transform hover:scale-105 transition-transform duration-300" 
+                 src="{{this.imageUrl}}" 
+                 alt="{{this.title}}">
+        </a>
+        <div class="px-6 py-4">
+            <a href="#">
+                <h5 class="text-lg md:text-xl font-semibold text-gray-900 mb-2 hover:text-blue-600 transition-colors duration-300">
+                    {{this.title}}
+                </h5>
+            </a>
+            <div class="flex items-center mt-2 mb-4">
+                <div class="flex items-center space-x-1 rtl:space-x-reverse">
+                    <!-- 5 Gold Stars -->
+                    {{!-- Copy your 5 star SVGs here --}}
+                </div>
+                <span class="ml-3 bg-blue-100 text-blue-800 text-xs font-semibold px-2 py-0.5 rounded">5.0</span>
+            </div>
+            <div class="flex items-center justify-between">
+                <span class="text-2xl font-bold text-gray-900">{{this.price}}</span>
+                <a href="#" class="bg-blue-600 text-white font-medium px-5 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-300 shadow-sm hover:shadow-md">
+                    Add to Cart
+                </a>
+            </div>
+        </div>
+    </div>
+    {{/each}}
+  {{else}}
+    <h1 class="text-2xl font-bold text-gray-700">No Products Found!</h1>
+  {{/if}}
+</main>
