@@ -1,20 +1,8 @@
-const path = require('path');
 const express = require('express');
-const rootDir = require('../util/path');
-
-const adminData = require('./admin'); // expects admin.js to export the products array (e.g. module.exports.products = products;)
-
 const router = express.Router();
+const productsController = require('../controllers/products');  // <-- ADD THIS
 
-router.get('/', (req, res, next) => {
-  res.render('shop', {
-    pageTitle: 'Shop',
-    path: '/',
-    prods: adminData.products,          // <-- pass products to template
-    hasProducts: adminData.products.length > 0,
-    activeShop: true,
-    productCSS: true
-  });
-});
+// GET / -> show all products
+router.get("/", productsController.getProducts);
 
 module.exports = router;

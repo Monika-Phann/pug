@@ -1,24 +1,25 @@
 const express = require('express');
 const path = require('path');
-const bodyParser = require('body-parser');
 
 const app = express();
+
+const errorController = require('./controllers/error');
+
+app.use(express.urlencoded({ extended: false }));
+
 
 // Set Pug as the view engine
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
-const adminData = require('./routes/admin');
+const adminRouts = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 
-app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/admin', adminData.routes);
+app.use('/admin', adminRouts);
 app.use(shopRoutes);
 
-app.use((req, res, next) => {
-  res.status(404).render('404', { pageTitle: 'Page Not Found', layout: false });
-});
+app.use(errorController.get404);
 
 app.listen(3000, () => console.log('Server running on port 3000'));

@@ -1,16 +1,74 @@
 <%- include('includes/head.ejs') %>
-  <link rel="stylesheet" href="/css/product.css">
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.3/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body>
   <%- include('includes/navigation.ejs') %>
 
-  <main>
-    <form class="product-form" action="/admin/add-product" method="POST">
-      <div class="form-control">
-        <label for="title">Title</label>
-        <input type="text" id="title" name="title">
-      </div>
-      <button type="submit">Add Product</button>
-    </form>
+  <main class="min-h-screen flex items-center justify-center bg-gray-50 p-6">
+    <div class="w-full max-w-lg bg-white shadow-lg rounded-2xl p-8">
+      <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Add New Product</h2>
+
+      <form action="/admin/add-product" method="POST" class="space-y-5">
+        <!-- Product Title -->
+        <div>
+          <label class="block text-gray-700 font-medium mb-2" for="title">Product Title</label>
+          <input
+            type="text"
+            name="title"
+            id="title"
+            placeholder="Enter product title"
+            required
+            class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          >
+        </div>
+
+        <!-- Description -->
+        <div>
+          <label class="block text-gray-700 font-medium mb-2" for="description">Description</label>
+          <textarea
+            name="description"
+            id="description"
+            rows="3"
+            placeholder="Enter product description"
+            class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+          ></textarea>
+        </div>
+
+        <!-- Price -->
+        <div>
+          <label class="block text-gray-700 font-medium mb-2" for="price">Price</label>
+          <input
+            type="text"
+            name="price"
+            id="price"
+            placeholder="Enter price (e.g., $599)"
+            class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          >
+        </div>
+
+        <!-- Image URL -->
+        <div>
+          <label class="block text-gray-700 font-medium mb-2" for="imageUrl">Image URL</label>
+          <input
+            type="text"
+            name="imageUrl"
+            id="imageUrl"
+            placeholder="Enter image URL"
+            class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          >
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-center">
+          <button
+            type="submit"
+            class="w-full bg-blue-600 text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105"
+          >
+            Add Product
+          </button>
+        </div>
+      </form>
+    </div>
   </main>
+
 <%- include('includes/end.ejs') %>
