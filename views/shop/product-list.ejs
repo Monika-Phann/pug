@@ -4,6 +4,21 @@
 <body>
 <%- include('../includes/navigation.ejs') %>
 
+<% 
+// Helper to format a price as $X.XX
+const fmt = (v) => {
+  if (v === undefined || v === null) return '$0.00';
+  let n;
+  if (typeof v === 'number') n = v;
+  else {
+    const cleaned = String(v).replace(/[^0-9.]/g, '');
+    n = cleaned ? parseFloat(cleaned) : 0;
+  }
+  if (Number.isNaN(n)) n = 0;
+  return '$' + n.toFixed(2);
+};
+%>
+
 <main class="container mx-auto px-4 py-8">
   <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">List Products</h1>
 
@@ -11,10 +26,10 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       <% prods.forEach(prod => { %>
         <div class="bg-white border border-gray-200 rounded-xl shadow hover:shadow-xl transition-shadow duration-300 flex flex-col h-full">
-          <a href="/views/shop/product-list.ejs" class="block overflow-hidden">
-            <img src="<%= prod.imageUrl %>" alt="<%= prods.title %>" 
+          <div class="block overflow-hidden">
+            <img src="<%= prod.imageUrl %>" alt="<%= prod.title %>" 
                  class="w-full h-48 object-cover transform hover:scale-105 transition-transform duration-300">
-          </a>
+          </div>
           <div class="px-4 py-3 flex flex-col flex-grow">
             <h2 class="text-lg font-semibold text-gray-900 mb-2 hover:text-blue-600 transition-colors duration-300">
               <%= prod.title %>
@@ -27,10 +42,13 @@
               <span class="text-sm font-medium text-gray-500">5.0</span>
             </p>
             <div class="mt-auto flex items-center justify-between">
-              <span class="text-xl font-bold text-gray-900"><%= prod.price || '$599' %></span>
-              <a href="/" class="bg-blue-600 text-white font-medium px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-300">
-                Add to Cart
-              </a>
+              <span class="text-xl font-bold text-gray-900"><%= fmt(prod.price) %></span>
+              <form action="/cart" method="POST">
+                <input type="hidden" name="productId" value="<%= prod.id %>">
+                <button type="submit" class="bg-blue-600 text-white font-medium px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-300">
+                  Add to Cart
+                </button>
+              </form>
             </div>
           </div>
         </div>

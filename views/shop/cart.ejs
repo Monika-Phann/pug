@@ -1,11 +1,66 @@
 <%- include('../includes/head.ejs') %>
-</head>
 <body>
 <%- include('../includes/navigation.ejs') %>
 
+<% 
+// helper to format a price as $X.XX
+const fmt = (v) => {
+  if (v === undefined || v === null) return '$0.00';
+  let n;
+  if (typeof v === 'number') n = v;
+  else {
+    // strip non-numeric chars (like "$") and parse
+    const cleaned = String(v).replace(/[^0-9.]/g, '');
+    n = cleaned ? parseFloat(cleaned) : 0;
+  }
+  if (Number.isNaN(n)) n = 0;
+  return '$' + n.toFixed(2);
+};
+%>
+
 <main class="container mx-auto px-4 py-8">
-  <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Your Cart</h1>
-  <p class="text-center text-gray-700">Cart functionality will be implemented here.</p>
+  <h1 class="text-3xl font-bold mb-6 text-center">Your Cart</h1>
+
+  <% if (products && products.length > 0) { %>
+    <% products.forEach(item => { 
+         // get the numeric price
+         const itemPriceRaw = Number(item.price ?? item.productData?.price ?? 0);
+    %>
+      <div class="flex items-center justify-between bg-white p-4 rounded-lg shadow mb-4">
+        <div class="flex items-center space-x-4">
+          <% if (item.productData) { %>
+            <img src="<%= item.productData.imageUrl %>" alt="<%= item.productData.title %>" class="w-20 h-20 object-cover rounded">
+            <div>
+              <h2 class="font-semibold"><%= item.productData.title %></h2>
+              <p class="text-sm text-gray-600"><%= item.productData.description %></p>
+            </div>
+          <% } else { %>
+            <div>
+              <h2 class="font-semibold">Unknown product</h2>
+            </div>
+          <% } %>
+        </div>
+
+        <div class="flex items-center space-x-4">
+          <div>
+            <p class="text-lg font-medium"><%= fmt(itemPriceRaw) %></p>
+            <p class="text-sm text-gray-500">Qty: <%= item.qty %></p>
+          </div>
+
+          <form action="/cart-delete-item" method="POST">
+            <input type="hidden" name="id" value="<%= item.productData?.id %>">
+            <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700">Remove</button>
+          </form>
+        </div>
+      </div>
+    <% }) %>
+
+    <div class="mt-6 text-right">
+      <p class="text-xl font-bold">Total: <%= fmt(totalPrice) %></p>
+    </div>
+  <% } else { %>
+    <p class="text-center text-gray-700">Your cart is empty.</p>
+  <% } %>
 </main>
 
 <%- include('../includes/end.ejs') %>
